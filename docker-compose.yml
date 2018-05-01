@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+
+  web:
+    build: ./web
+    image: ${REPO_ADDR}/web
+    labels:
+      - traefik.frontend.rule=Host:${WEB_HOST}
+    restart: always
+
+  api:
+    build: ./api
+    env_file:
+      - ./db/db.env
+    image: ${REPO_ADDR}/api
+    labels:
+      - traefik.frontend.rule=Host:${API_HOST}
+      - traefik.frontend.headers.customResponseHeaders=Access-Control-Allow-Origin:http://${WEB_HOST}
+    restart: always
+
+  db:
+    env_file:
+      - ./db/db.env
+    image: postgres:alpine
+    restart: always
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/postgresql/data
+
+  rproxy:
+    command: --api --docker
+    image: traefik
+    labels:
+      - traefik.frontend.rule=Host:${RPROXY_HOST}
+      - traefik.port=8080
+    ports:
+      - "80:80"
+      - "8080:8080"
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  db-data:
