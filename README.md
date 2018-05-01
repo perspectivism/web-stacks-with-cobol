@@ -23,7 +23,7 @@ This application is a case study on Dockerizing a COBOL application for computin
 
 ## Prerequisites
 
-`Docker` and `docker-compose` are needed to run the application. Installation instructions can be found at [Install Docker](https://docs.docker.com/compose/install/) and [Install Docker Compose](https://docs.docker.com/compose/install/).
+`Docker` and `docker-compose` are needed to run the application. Installation instructions can be found at [Install Docker](https://docs.docker.com/install/) and [Install Docker Compose](https://docs.docker.com/compose/install/).
 
 ## How it Works
 
